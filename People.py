@@ -88,7 +88,7 @@ def writeNumber(t, number, x, y):
     time.sleep(0.5)
     
 
-numpeople = 15
+numpeople = 100
 names = []
 generateNames(names, numpeople)
 windowsizex = 290
@@ -118,15 +118,87 @@ if grayGame:
     people[grayindex].t.circle(50)
 adjustSpeed(people)
 numcolorpeople = numColor(people, screencolor)
+def displayQuestion(t, color):
+    t.goto(0,10)
+    t.color('black')
+    style = ('Courier', 24, 'bold', 'italic')
+    displaystr = 'How many ' + color + ' people are there?'
+    t.write(displaystr, font=style, align='center')
 print(numcolorpeople)
-guess = int(input('How many ' + screencolor + ' people are there?\n'))
+questionWriter = Turtle()
+questionWriter.penup()
+questionWriter.hideturtle()
+displayQuestion(questionWriter, screencolor)
+t1 = Turtle()
+t1.hideturtle()
+t1.penup()
+t1.goto(-100, -50)
+def show0():
+    style = ('Courier', 18, 'bold')
+    t1.write('0', font=style, align='center')
+    t1.forward(15)
+def show1():
+    style = ('Courier', 18, 'bold')
+    t1.write('1', font=style, align='center')
+    t1.forward(15)
+def show2():
+    style = ('Courier', 18, 'bold')
+    t1.write('2', font=style, align='center')
+    t1.forward(15)
+def show3():
+    style = ('Courier', 18, 'bold')
+    t1.write('3', font=style, align='center')
+    t1.forward(15)
+def show4():
+    style = ('Courier', 18, 'bold')
+    t1.write('4', font=style, align='center')
+    t1.forward(15)
+def show5():
+    style = ('Courier', 18, 'bold')
+    t1.write('5', font=style, align='center')
+    t1.forward(15)
+def show6():
+    style = ('Courier', 18, 'bold')
+    t1.write('6', font=style, align='center')
+    t1.forward(15)
+def show7():
+    style = ('Courier', 18, 'bold')
+    t1.write('7', font=style, align='center')
+    t1.forward(15)
+def show8():
+    style = ('Courier', 18, 'bold')
+    t1.write('8', font=style, align='center')
+    t1.forward(15)
+def show9():
+    style = ('Courier', 18, 'bold')
+    t1.write('9', font=style, align='center')
+    t1.forward(15)
 t = Turtle()
 t.penup()
-t.speed(5)
-gotoEach(people, screencolor, t)
-if guess == numcolorpeople:
+t.hideturtle()
+def revealanswer():
+    global people, screencolor, t
+    gotoEach(people, screencolor, t)
+def cleanup():
+    t1.clear()
+    t1.goto(-100, -50)
+#s.onkey(up, 'Up')
+s.onkeyrelease(lambda: cleanup(), 'Delete')
+s.onkeyrelease(lambda: revealanswer(), 'KP_Enter')
+s.onkeyrelease(lambda: show0(), '0')
+s.onkeyrelease(lambda: show1(), '1')
+s.onkeyrelease(lambda: show2(), '2')
+s.onkeyrelease(lambda: show3(), '3')
+s.onkeyrelease(lambda: show4(), '4')
+s.onkeyrelease(lambda: show5(), '5')
+s.onkeyrelease(lambda: show6(), '6')
+s.onkeyrelease(lambda: show7(), '7')
+s.onkeyrelease(lambda: show8(), '8')
+s.onkeyrelease(lambda: show9(), '9')
+s.listen()
+'''if guess == numcolorpeople:
     print('You Win')
 else:
-    print('You Lose')
+    print('You Lose')'''
 
 s.exitonclick()
