@@ -63,6 +63,7 @@ s.bgcolor('black')
 rules = Turtle()
 writeAt(rules, 'People in a City', 0, 0, 'white', 30, 'center')
 time.sleep(5)
+timeseconds = 0
 rules.clear()
 writeAtB(rules, 'You have 10 seconds to observe the crowd.', -480, 150, 'white', 16)
 writeAtB(rules, 'Your score is the absolute value of the different between your guess and the actual amount.', -480, 120, 'white', 16)
@@ -70,7 +71,9 @@ writeAtB(rules, 'Smaller score = better.', -480, 90, 'white', 16)
 writeAtB(rules, 'A window will pop up for you to submit response.', -480, 60, 'white', 16)
 writeAtB(rules, 'Press enter to submit.', -480, 30, 'white', 16)
 writeAtB(rules, 'Good luck! Have fun.', -480, 0, 'white', 20)
-time.sleep(10)
+while timeseconds < 10:
+    timeseconds+=1
+    time.sleep(1)
 rules.clear()
 screencolor = colors[randint(0, len(colors)-1)]
 s.bgcolor(screencolor)
