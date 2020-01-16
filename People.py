@@ -53,13 +53,12 @@ def writeAtB(t, message, x, y, color, size):
     style = ('Courier', size, 'bold')
     t.write(str(message), font=style)
 
-colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple', 'black']
+colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple']
 s = Screen()
 s.screensize()
 s.setup(width = 1.0, height = 1.0)
 screenheight = s.window_height()
 screenwidth = s.window_width()
-'''s.setup(1500, 800)
 s.bgcolor('black')
 rules = Turtle()
 writeAt(rules, 'People in a City', 0, 0, 'white', 30, 'center')
@@ -68,11 +67,11 @@ rules.clear()
 writeAtB(rules, 'You have 10 seconds to observe the crowd.', -480, 150, 'white', 16)
 writeAtB(rules, 'Your score is the absolute value of the different between your guess and the actual amount.', -480, 120, 'white', 16)
 writeAtB(rules, 'Smaller score = better.', -480, 90, 'white', 16)
-writeAtB(rules, 'You have 2 seconds to type your answer on the screen.', -480, 60, 'white', 16)
-writeAtB(rules, 'Press enter to submit. Press delete to clear your response, backspace just for 1 character.', -480, 30, 'white', 16)
+writeAtB(rules, 'A window will pop up for you to submit response.', -480, 60, 'white', 16)
+writeAtB(rules, 'Press enter to submit.', -480, 30, 'white', 16)
 writeAtB(rules, 'Good luck! Have fun.', -480, 0, 'white', 20)
 time.sleep(10)
-rules.clear()'''
+rules.clear()
 screencolor = colors[randint(0, len(colors)-1)]
 s.bgcolor(screencolor)
 people = []
@@ -141,6 +140,9 @@ def countdown(t, seconds, time):
         writeAtB(t, i, screenwidth/2-100, screenheight/2-100, 'black', 40)
         time.sleep(1)
         t.clear()
+def disappear(t):
+    t.hideturtle()
+    t.penup()
 
 numpeople = 100
 names = []
@@ -153,6 +155,12 @@ else:
     grayindex = numpeople
 
 i = 0
+loading = Turtle()
+disappear(loading)
+loading.speed('fastest')
+writeAtB(loading, 'Loading', -100, screenheight/2 - 100, 'black', 30)
+loadingx = loading.position()[0]
+loadingx+=150
 while i < numpeople:
     randx = randint(-windowsizex, windowsizex)
     randy = randint(-windowsizey, windowsizey)
@@ -165,6 +173,18 @@ while i < numpeople:
         p.goTo()
         people.append(p)
         i+=1
+    if i%25==0:
+        pos = loadingx
+        dots = Turtle()
+        disappear(dots)
+        dots.speed(4)
+        time.sleep(0.4)
+        for r in range(3):
+            pos += 15
+            writeAtB(dots, '.', pos, screenheight/2 - 100, 'black', 30)
+        time.sleep(0.7)
+        dots.clear()
+loading.clear()
 s.bgcolor('white')
 if grayGame:
     people[grayindex].t.speed('slowest')
@@ -172,145 +192,26 @@ if grayGame:
     people[grayindex].t.circle(50)
 adjustSpeed(people)
 numcolorpeople = numColor(people, screencolor)
-print(numcolorpeople)
 timer = Turtle()
-timer.hideturtle()
-timer.penup()
+disappear(timer)
+questionwriter = Turtle()
+disappear(questionwriter)
+writeAt(questionwriter, 'How many '+ screencolor + ' people are there?', 0, screenheight/2-100, 'black', 30, 'center')
 countdown(timer, 10, time)
+questionwriter.clear()
 s.bgcolor(screencolor)
 guess = s.numinput(screencolor + ' people', "How many " + screencolor + " people are there?", default=0, minval=0, maxval=numpeople)
+while int(guess)!=guess:
+    guess = s.numinput(screencolor + ' people', "How many " + screencolor + " people are there?", default=0, minval=0, maxval=numpeople)
 score = abs(guess - numcolorpeople)
 scorewriter = Turtle()
-scorewriter.hideturtle()
-scorewriter.penup()
-print('Height: ', s.window_height())
-print('Width: ', s.window_width())
+disappear(scorewriter)
 writeAtB(scorewriter, 'Score:', -1*screenwidth/2 +100, screenheight/2-100, 'black', 50)
 t = Turtle()
-t.hideturtle()
-t.penup()
+disappear(t)
 s.bgcolor('white')
 writeAtB(scorewriter, 'Guess:', screenwidth/2 - 350, screenheight/2-100, 'black', 50)
 writeAtB(scorewriter, int(guess), screenwidth/2 - 200, screenheight/2-250, 'black', 50)
 gotoEach(people, screencolor, t)
 writeAtB(scorewriter, int(score), -1*screenwidth/2 +200, screenheight/2-250, 'black', 50)
-'''questionWriter = Turtle()
-questionWriter.hideturtle()
-questionWriter.penup()
-writeAt(questionWriter, 'How many ' + screencolor + ' people are there?', 0, 340, 'black', 24, 'center')
-digitsEntered = []
-t1 = Turtle()
-t1.hideturtle()
-t1.penup()
-t1.goto(500, 0)
-timer = Turtle()
-timer.hideturtle()
-timer.penup()
-def countdown(t, seconds, time):
-    t.goto(-300,280)
-    for i in range(seconds, -1, -1):
-        t.color('black')
-        style = ('Courier', 20, 'bold')
-        t.write(str(i), font=style, align='center')
-        time.sleep(1)
-        t.clear()
-def show0():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('0', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(0)
-def show1():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('1', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(1)
-def show2():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('2', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(2)
-def show3():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('3', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(3)
-def show4():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('4', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(4)
-def show5():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('5', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(5)
-def show6():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('6', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(6)
-def show7():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('7', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(7)
-def show8():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('8', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(8)
-def show9():
-    global digitsEntered
-    style = ('Courier', 18, 'bold')
-    t1.write('9', font=style, align='center')
-    t1.forward(15)
-    digitsEntered.append(9)
-def backspace():
-    global digitsEntered
-    t1.clear()
-    digitsEntered = digitsEntered[0:-1]
-    writeDigits(t1, digitsEntered)
-t = Turtle()
-t.hideturtle()
-t.penup()
-def revealanswer():
-    global screencolor, t, people, questionWriter
-    t1.clear()
-    questionWriter.clear()
-    gotoEach(people, screencolor, t)
-    s.bye()
-def cleanup():
-    global digitsEntered
-    t1.clear()
-    t1.goto(500, 0)
-    digitsEntered.clear()
-#s.onkey(up, 'Up')
-#countdown(timer, 10, time)
-s.onkeyrelease(lambda: cleanup(), 'Delete')
-s.onkeyrelease(lambda: backspace(), 'BackSpace')
-s.onkeyrelease(lambda: show0(), '0')
-s.onkeyrelease(lambda: show1(), '1')
-s.onkeyrelease(lambda: show2(), '2')
-s.onkeyrelease(lambda: show3(), '3')
-s.onkeyrelease(lambda: show4(), '4')
-s.onkeyrelease(lambda: show5(), '5')
-s.onkeyrelease(lambda: show6(), '6')
-s.onkeyrelease(lambda: show7(), '7')
-s.onkeyrelease(lambda: show8(), '8')
-s.onkeyrelease(lambda: show9(), '9')
-s.listen()
-s.onkeyrelease(lambda: revealanswer(), 'Return')
-s.listen()
-s.exitonclick()
-answer = listToNum(digitsEntered)
-print(answer)'''
 s.exitonclick()
