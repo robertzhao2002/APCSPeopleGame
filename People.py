@@ -117,7 +117,7 @@ def writeNumber(t, number, x, y):
     time.sleep(0.5)
     
 def writeDigits(t, numlist):
-    t.goto(-100, -50)
+    t.goto(500, 0)
     style = ('Courier', 18, 'bold')
     for i in numlist:
         t.write(str(i), font=style, align='center')
@@ -165,12 +165,12 @@ print(numcolorpeople)
 questionWriter = Turtle()
 questionWriter.hideturtle()
 questionWriter.penup()
-writeAt(questionWriter, 'How many ' + screencolor + ' people are there?', 0, 10, 'black', 24, 'center')
+writeAt(questionWriter, 'How many ' + screencolor + ' people are there?', 0, 340, 'black', 24, 'center')
 digitsEntered = []
 t1 = Turtle()
 t1.hideturtle()
 t1.penup()
-t1.goto(-100, -50)
+t1.goto(500, 0)
 timer = Turtle()
 timer.hideturtle()
 timer.penup()
@@ -259,7 +259,7 @@ def revealanswer():
 def cleanup():
     global digitsEntered
     t1.clear()
-    t1.goto(-100, -50)
+    t1.goto(500, 0)
     digitsEntered.clear()
 #s.onkey(up, 'Up')
 #countdown(timer, 10, time)
