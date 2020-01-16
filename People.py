@@ -55,7 +55,7 @@ def writeAtB(t, message, x, y, color, size):
 
 colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple', 'black']
 s = Screen()
-s.setup(1500, 800)
+'''s.setup(1500, 800)
 s.bgcolor('black')
 rules = Turtle()
 writeAt(rules, 'People in a City', 0, 0, 'white', 30, 'center')
@@ -65,10 +65,10 @@ writeAtB(rules, 'You have 10 seconds to observe the crowd.', -480, 150, 'white',
 writeAtB(rules, 'Your score is the absolute value of the different between your guess and the actual amount.', -480, 120, 'white', 16)
 writeAtB(rules, 'Smaller score = better.', -480, 90, 'white', 16)
 writeAtB(rules, 'You have 2 seconds to type your answer on the screen.', -480, 60, 'white', 16)
-writeAtB(rules, 'Press enter to submit. Press delete to clear your response.', -480, 30, 'white', 16)
+writeAtB(rules, 'Press enter to submit. Press delete to clear your response, backspace just for 1 character.', -480, 30, 'white', 16)
 writeAtB(rules, 'Good luck! Have fun.', -480, 0, 'white', 20)
 time.sleep(10)
-rules.clear()
+rules.clear()'''
 screencolor = colors[randint(0, len(colors)-1)]
 s.bgcolor(screencolor)
 people = []
@@ -116,6 +116,20 @@ def writeNumber(t, number, x, y):
     t.write(str(number), font=style, align='center')
     time.sleep(0.5)
     
+def writeDigits(t, numlist):
+    t.goto(-100, -50)
+    style = ('Courier', 18, 'bold')
+    for i in numlist:
+        t.write(str(i), font=style, align='center')
+        t.forward(15)
+
+def listToNum(arr):
+    k = len(arr) - 1
+    answer = 0
+    for i in arr:
+        answer += i * (10** k)
+        k-=1
+    return answer
 
 numpeople = 100
 names = []
@@ -147,17 +161,11 @@ if grayGame:
     people[grayindex].t.circle(50)
 adjustSpeed(people)
 numcolorpeople = numColor(people, screencolor)
-def displayQuestion(t, color):
-    t.goto(0,10)
-    t.color('black')
-    style = ('Courier', 24, 'bold', 'italic')
-    displaystr = 'How many ' + color + ' people are there?'
-    t.write(displaystr, font=style, align='center')
 print(numcolorpeople)
 questionWriter = Turtle()
 questionWriter.hideturtle()
 questionWriter.penup()
-displayQuestion(questionWriter, screencolor)
+writeAt(questionWriter, 'How many ' + screencolor + ' people are there?', 0, 10, 'black', 24, 'center')
 digitsEntered = []
 t1 = Turtle()
 t1.hideturtle()
@@ -234,22 +242,29 @@ def show9():
     t1.write('9', font=style, align='center')
     t1.forward(15)
     digitsEntered.append(9)
+def backspace():
+    global digitsEntered
+    t1.clear()
+    digitsEntered = digitsEntered[0:-1]
+    writeDigits(t1, digitsEntered)
 t = Turtle()
-t.penup()
 t.hideturtle()
+t.penup()
 def revealanswer():
-    global people, screencolor, t, questionWriter
+    global screencolor, t, people, questionWriter
     t1.clear()
     questionWriter.clear()
     gotoEach(people, screencolor, t)
+    s.bye()
 def cleanup():
     global digitsEntered
     t1.clear()
     t1.goto(-100, -50)
     digitsEntered.clear()
 #s.onkey(up, 'Up')
-countdown(timer, 10, time)
+#countdown(timer, 10, time)
 s.onkeyrelease(lambda: cleanup(), 'Delete')
+s.onkeyrelease(lambda: backspace(), 'BackSpace')
 s.onkeyrelease(lambda: show0(), '0')
 s.onkeyrelease(lambda: show1(), '1')
 s.onkeyrelease(lambda: show2(), '2')
@@ -260,15 +275,9 @@ s.onkeyrelease(lambda: show6(), '6')
 s.onkeyrelease(lambda: show7(), '7')
 s.onkeyrelease(lambda: show8(), '8')
 s.onkeyrelease(lambda: show9(), '9')
+s.listen()
 s.onkeyrelease(lambda: revealanswer(), 'Return')
 s.listen()
-print(digitsEntered)
-def listToNum(arr):
-    k = len(arr) - 1
-    answer = 0
-    for i in arr:
-        answer += i * (10** k)
-        k-=1
-    return answer
-print(listToNum(digitsEntered))
 s.exitonclick()
+answer = listToNum(digitsEntered)
+print(answer)
