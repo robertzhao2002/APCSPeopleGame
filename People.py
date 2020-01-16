@@ -55,6 +55,10 @@ def writeAtB(t, message, x, y, color, size):
 
 colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple', 'black']
 s = Screen()
+s.screensize()
+s.setup(width = 1.0, height = 1.0)
+screenheight = s.window_height()
+screenwidth = s.window_width()
 '''s.setup(1500, 800)
 s.bgcolor('black')
 rules = Turtle()
@@ -130,6 +134,13 @@ def listToNum(arr):
         answer += i * (10** k)
         k-=1
     return answer
+def countdown(t, seconds, time):
+    t.goto(-300,280)
+    for i in range(seconds, -1, -1):
+        t.color('black')
+        writeAtB(t, i, screenwidth/2-100, screenheight/2-100, 'black', 40)
+        time.sleep(1)
+        t.clear()
 
 numpeople = 100
 names = []
@@ -162,7 +173,28 @@ if grayGame:
 adjustSpeed(people)
 numcolorpeople = numColor(people, screencolor)
 print(numcolorpeople)
-questionWriter = Turtle()
+timer = Turtle()
+timer.hideturtle()
+timer.penup()
+countdown(timer, 10, time)
+s.bgcolor(screencolor)
+guess = s.numinput(screencolor + ' people', "How many " + screencolor + " people are there?", default=0, minval=0, maxval=numpeople)
+score = abs(guess - numcolorpeople)
+scorewriter = Turtle()
+scorewriter.hideturtle()
+scorewriter.penup()
+print('Height: ', s.window_height())
+print('Width: ', s.window_width())
+writeAtB(scorewriter, 'Score:', -1*screenwidth/2 +100, screenheight/2-100, 'black', 50)
+t = Turtle()
+t.hideturtle()
+t.penup()
+s.bgcolor('white')
+writeAtB(scorewriter, 'Guess:', screenwidth/2 - 350, screenheight/2-100, 'black', 50)
+writeAtB(scorewriter, int(guess), screenwidth/2 - 200, screenheight/2-250, 'black', 50)
+gotoEach(people, screencolor, t)
+writeAtB(scorewriter, int(score), -1*screenwidth/2 +200, screenheight/2-250, 'black', 50)
+'''questionWriter = Turtle()
 questionWriter.hideturtle()
 questionWriter.penup()
 writeAt(questionWriter, 'How many ' + screencolor + ' people are there?', 0, 340, 'black', 24, 'center')
@@ -280,4 +312,5 @@ s.onkeyrelease(lambda: revealanswer(), 'Return')
 s.listen()
 s.exitonclick()
 answer = listToNum(digitsEntered)
-print(answer)
+print(answer)'''
+s.exitonclick()
