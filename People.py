@@ -1,5 +1,7 @@
 from random import randint, shuffle
 from turtle import Turtle, Screen, Shape
+import winsound
+import sys
 import time
 class Person:
     def __init__(self, color, x, y):
@@ -25,6 +27,8 @@ class Person:
     def goTo(self):
         self.t.speed('fastest')
         self.t.goto(self.xpos, self.ypos)
+    def death(self):
+        self.t.clear()
 def generateNames(names, numpeople):
     for i in range(numpeople):
         names.append(str(i))
@@ -54,6 +58,7 @@ def writeAtB(t, message, x, y, color, size):
     t.write(str(message), font=style)
 
 colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple']
+winsound.PlaySound('C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Flyflyfly', winsound.SND_ASYNC)
 s = Screen()
 s.screensize()
 s.setup(width = 1.0, height = 1.0)
@@ -66,8 +71,8 @@ time.sleep(5)
 timeseconds = 0
 rules.clear()
 writeAtB(rules, 'You have 10 seconds to observe the crowd.', -480, 150, 'white', 16)
-writeAtB(rules, 'Your score is the absolute value of the different between your guess and the actual amount.', -480, 120, 'white', 16)
-writeAtB(rules, 'Smaller score = better.', -480, 90, 'white', 16)
+writeAtB(rules, 'Your score is the absolute value of the difference between your guess and the actual amount.', -480, 120, 'white', 16)
+writeAtB(rules, 'Smaller score = better. (0 is the best)', -480, 90, 'white', 16)
 writeAtB(rules, 'A window will pop up for you to submit response.', -480, 60, 'white', 16)
 writeAtB(rules, 'Press enter to submit.', -480, 30, 'white', 16)
 writeAtB(rules, 'Good luck! Have fun.', -480, 0, 'white', 20)
@@ -98,7 +103,8 @@ def adjustSpeed(people):
     for i in people:
         i.t.speed('fastest')
 
-def gotoEach(people, color, t):
+def gotoEach(people, color, t, speed):
+    t.speed(speed)
     firstDone = False
     numtimes = 1
     numberwriter = Turtle()
@@ -147,7 +153,11 @@ def disappear(t):
     t.hideturtle()
     t.penup()
 
-numpeople = 100
+numpeople = s.numinput('Generate people', "How many people are in the city?", default=20, minval=20, maxval=150)
+while numpeople is None or int(numpeople)!=numpeople:
+    numpeople = s.numinput('Generate people', "How many people are in the city?", default=20, minval=20, maxval=150)
+numpeople = int(numpeople)
+print(numpeople)
 names = []
 generateNames(names, numpeople)
 windowsizex = 290
@@ -176,7 +186,7 @@ while i < numpeople:
         p.goTo()
         people.append(p)
         i+=1
-    if i%25==0:
+    if i%(numpeople//4)==0:
         pos = loadingx
         dots = Turtle()
         disappear(dots)
@@ -199,12 +209,13 @@ timer = Turtle()
 disappear(timer)
 questionwriter = Turtle()
 disappear(questionwriter)
+print(numcolorpeople)
 writeAt(questionwriter, 'How many '+ screencolor + ' people are there?', 0, screenheight/2-100, 'black', 30, 'center')
 countdown(timer, 10, time)
 questionwriter.clear()
 s.bgcolor(screencolor)
 guess = s.numinput(screencolor + ' people', "How many " + screencolor + " people are there?", default=0, minval=0, maxval=numpeople)
-while int(guess)!=guess:
+while guess is None or int(guess)!=guess:
     guess = s.numinput(screencolor + ' people', "How many " + screencolor + " people are there?", default=0, minval=0, maxval=numpeople)
 score = abs(guess - numcolorpeople)
 scorewriter = Turtle()
@@ -215,6 +226,28 @@ disappear(t)
 s.bgcolor('white')
 writeAtB(scorewriter, 'Guess:', screenwidth/2 - 350, screenheight/2-100, 'black', 50)
 writeAtB(scorewriter, int(guess), screenwidth/2 - 200, screenheight/2-250, 'black', 50)
-gotoEach(people, screencolor, t)
+if numcolorpeople > 17:
+    gotoEach(people, screencolor, t, 'fast')
+else:
+    gotoEach(people, screencolor, t, 3)
 writeAtB(scorewriter, int(score), -1*screenwidth/2 +200, screenheight/2-250, 'black', 50)
+if score == 0:
+    writeAtB(scorewriter, 'Perfect!', -1*screenwidth/2 +100, screenheight/2-320, 'black', 50)
+    winsound.PlaySound("C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Kids Saying Yay [Sound Effect]", winsound.SND_FILENAME)
+winsound.PlaySound('C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Flyflyfly', winsound.SND_ASYNC)
+s.clear()
+s.bgcolor('black')
+writeAt(scorewriter, 'Created By:', 0, 150, 'white', 45, 'center')
+writeAt(scorewriter, 'EpIcCrEaToR', 0, 50, 'white', 45, 'center')
+time.sleep(1.2)
+scorewriter.clear()
+writeAt(scorewriter, 'Programming By:', 0, 150, 'white', 45, 'center')
+writeAt(scorewriter, 'EpIcPrOgRaMmEr', 0, 50, 'white', 45, 'center')
+time.sleep(1.2)
+scorewriter.clear()
+writeAt(scorewriter, 'Beats By:', 0, 150, 'white', 45, 'center')
+writeAt(scorewriter, 'EpIcBeAtZmAkEr', 0, 50, 'white', 45, 'center')
+time.sleep(1.2)
+scorewriter.clear()
+writeAt(scorewriter, 'Thanks for playing!', 0, 0, 'white', 45, 'center')
 s.exitonclick()
