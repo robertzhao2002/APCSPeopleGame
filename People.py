@@ -58,7 +58,7 @@ def writeAtB(t, message, x, y, color, size):
     t.write(str(message), font=style)
 
 colors = ['red', 'orange', 'yellow', 'dark green', 'blue', 'purple']
-winsound.PlaySound('C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Flyflyfly', winsound.SND_ASYNC)
+winsound.PlaySound('Flyflyfly', winsound.SND_ASYNC)
 s = Screen()
 s.screensize()
 s.setup(width = 1.0, height = 1.0)
@@ -157,7 +157,6 @@ numpeople = s.numinput('Generate people', "How many people are in the city?", de
 while numpeople is None or int(numpeople)!=numpeople:
     numpeople = s.numinput('Generate people', "How many people are in the city?", default=20, minval=20, maxval=150)
 numpeople = int(numpeople)
-print(numpeople)
 names = []
 generateNames(names, numpeople)
 windowsizex = 290
@@ -209,7 +208,6 @@ timer = Turtle()
 disappear(timer)
 questionwriter = Turtle()
 disappear(questionwriter)
-print(numcolorpeople)
 writeAt(questionwriter, 'How many '+ screencolor + ' people are there?', 0, screenheight/2-100, 'black', 30, 'center')
 countdown(timer, 10, time)
 questionwriter.clear()
@@ -233,8 +231,10 @@ else:
 writeAtB(scorewriter, int(score), -1*screenwidth/2 +200, screenheight/2-250, 'black', 50)
 if score == 0:
     writeAtB(scorewriter, 'Perfect!', -1*screenwidth/2 +100, screenheight/2-320, 'black', 50)
-    winsound.PlaySound("C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Kids Saying Yay [Sound Effect]", winsound.SND_FILENAME)
-winsound.PlaySound('C:\\Users\\rober\\Desktop\\PythonPracticeFiles\\APCSPeopleGame\\Flyflyfly', winsound.SND_ASYNC)
+    winsound.PlaySound("Kids Saying Yay [Sound Effect]", winsound.SND_FILENAME)
+else:
+    winsound.PlaySound("crowdaw", winsound.SND_FILENAME)
+winsound.PlaySound('Flyflyfly', winsound.SND_ASYNC)
 s.clear()
 s.bgcolor('black')
 writeAt(scorewriter, 'Created By:', 0, 150, 'white', 45, 'center')
