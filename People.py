@@ -24,6 +24,7 @@ class Person:
         self.f.addcomponent(self.t.get_shapepoly(), self.color)
         s.register_shape(name, self.f)
         self.t.shape(name)
+        #Compound Shapes here: https://docs.python.org/3/library/turtle.html#compound-shapes
     def goTo(self):
         self.t.speed('fastest')
         self.t.goto(self.xpos, self.ypos)
@@ -32,9 +33,6 @@ class Person:
 def generateNames(names, numpeople):
     for i in range(numpeople):
         names.append(str(i))
-def switchPeople(people): #work on !!!!
-    for p in people:
-        pass
 def numColor(people, color):
     f = 0
     for p in people:
@@ -83,7 +81,6 @@ rules.clear()
 screencolor = colors[randint(0, len(colors)-1)]
 s.bgcolor(screencolor)
 people = []
-grayGame = False
 
 def checkTooClose(x, y, people):
     distance = 0
@@ -94,9 +91,7 @@ def checkTooClose(x, y, people):
             return False
     return True
 
-def drawingColor(i, grayindex, randcolor):
-    if i == grayindex:
-        return 'gray'
+def drawingColor(i, randcolor):
     return randcolor
 
 def adjustSpeed(people):
@@ -161,10 +156,6 @@ names = []
 generateNames(names, numpeople)
 windowsizex = 290
 windowsizey = 290
-if grayGame:
-    grayindex = randint(0,numpeople-1)
-else:
-    grayindex = numpeople
 
 i = 0
 loading = Turtle()
@@ -178,7 +169,7 @@ while i < numpeople:
     randy = randint(-windowsizey, windowsizey)
     randcolor = colors[randint(0,len(colors)-1)]
     if i==0 or checkTooClose(randx, randy, people):
-        c = drawingColor(i, grayindex, randcolor)
+        c = drawingColor(i, randcolor)
         p = Person(c, randx, randy)
         p.birth(s, names[i])
         s.update()
@@ -198,10 +189,6 @@ while i < numpeople:
         dots.clear()
 loading.clear()
 s.bgcolor('white')
-if grayGame:
-    people[grayindex].t.speed('slowest')
-    people[grayindex].t.goto(0,0)
-    people[grayindex].t.circle(50)
 adjustSpeed(people)
 numcolorpeople = numColor(people, screencolor)
 timer = Turtle()
