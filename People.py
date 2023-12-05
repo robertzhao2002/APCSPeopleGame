@@ -1,8 +1,10 @@
-from random import randint, shuffle
+from random import shuffle
 from turtle import Turtle, Screen, Shape
 import winsound
 import sys
 import time
+import secrets
+
 class Person:
     def __init__(self, color, x, y):
         self.color = color
@@ -78,7 +80,7 @@ while timeseconds < 10:
     timeseconds+=1
     time.sleep(1)
 rules.clear()
-screencolor = colors[randint(0, len(colors)-1)]
+screencolor = colors[secrets.SystemRandom().randint(0, len(colors)-1)]
 s.bgcolor(screencolor)
 people = []
 
@@ -165,9 +167,9 @@ writeAtB(loading, 'Loading', -100, screenheight/2 - 100, 'black', 30)
 loadingx = loading.position()[0]
 loadingx+=150
 while i < numpeople:
-    randx = randint(-windowsizex, windowsizex)
-    randy = randint(-windowsizey, windowsizey)
-    randcolor = colors[randint(0,len(colors)-1)]
+    randx = secrets.SystemRandom().randint(-windowsizex, windowsizex)
+    randy = secrets.SystemRandom().randint(-windowsizey, windowsizey)
+    randcolor = colors[secrets.SystemRandom().randint(0,len(colors)-1)]
     if i==0 or checkTooClose(randx, randy, people):
         c = drawingColor(i, randcolor)
         p = Person(c, randx, randy)
